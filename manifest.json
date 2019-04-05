@@ -1,0 +1,23 @@
+{
+	"manifest_version": 2,
+
+	"name": "Jinteki.net Log Parser",
+	"description": "Parse jnet chat logs into stats!",
+	"version": "1.0",
+	"author": "@lopert",
+
+	"background": {
+		"scripts": ["popup.js"],
+		"persistent": true
+	},
+
+	"permissions": [
+        "tabs",
+        "http://*/",
+        "https://*/"
+    ],
+	"browser_action": {
+		"default_icon": "nisei_adam.png",
+		"default_popup": "popup.html"
+	}
+}
