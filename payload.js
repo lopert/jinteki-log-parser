@@ -1,32 +1,63 @@
+// main
+function always_be_running() {
+    // get the system logs
+    system_log_nodes = document.getElementsByClassName("system");
+    size = system_log_nodes.length
 
-// get the system logs
-system_log_nodes = document.getElementsByClassName("system");
-size = system_log_nodes.length
+    // iterate through nodes backwards
+    for (index = size-1;index >= 0; index--) { 
 
-for (index = size-1;index >= 0; index--) { 
+        node = system_log_nodes[index]
+        process_node(node)
 
-    text = system_log_nodes[index].innerText;
-
-    // log credit totals
-    if (text.includes("is ending their turn")) {
-        parse_end_of_turn_node(system_log_nodes[index])
     }
 }
 
-function parse_end_of_turn_node(node) {
+function process_node(node) {
+    node_text = parse_node_for_text (node)
 
-    username = ""
-    event = ""
-    final_credit_total = ""
-
-    html = node.innerHTML
-    //szutek is ending their turn 15 with 4 <span class="anr-icon credit"></span> and 0 cards in their Grip.<hr>
-
-    username = html.split(" is ending their turn ")[0]
-    credits = html.split(" <span class=\"anr-icon credit\"></span>")[0].split(" with ")[1]
-    turn = html.split(" turn ")[1].split(" with ")[0]
-    
-    console.log("Turn: " + turn + " // " + username + " // Credits: " + credits)
+    if (node_text.includes("started their turn")) {
+        parse_start_of_turn_node(node_text)
+    }
+    else if (node_text.includes("is ending their turn")) {
+        parse_end_of_turn_node(node_text)
+    }
 }
+
+function parse_start_of_turn_node(node_text) {
+
+    username = node_text.split(" started their turn ")[0]
+    turn = node_text.split(" turn ")[1].split(" with ")[0]
+    credits = node_text.split(" [credit_icon]")[0].split(" with ")[1]
+    cards = node_text.split(" [credit_icon] and ")[1].split(" cards in")[0]
+    
+    console.log(">>>> " + username + " is starting turn: " + turn + " // credits: " + credits + " // cards: " + cards)
+    
+}
+
+function parse_end_of_turn_node(node_text) {
+
+    username = node_text.split(" is ending their turn ")[0]
+    turn = node_text.split(" turn ")[1].split(" with ")[0]
+    credits = node_text.split(" [credit_icon]")[0].split(" with ")[1]
+    cards = node_text.split(" [credit_icon] and ")[1].split(" cards in")[0]
+    
+    console.log("<<<< " + username + " is ending turn: " + turn + " // credits: " + credits + " // cards: " + cards)
+}
+
+function replace_log_icons(html) {
+    text = html.replace("<span class=\"anr-icon click\"></span>", "[click_icon]")
+    text = text.replace("<span class=\"anr-icon credit\"></span>", "[credit_icon]")
+
+    return text
+}
+
+function parse_node_for_text(node) {
+    html = node.innerHTML
+    text = replace_log_icons(html)
+    return text
+}
+
+always_be_running();
 
 //chrome.runtime.sendMessage(system_log_nodes[size-1].innerText);
