@@ -1,5 +1,5 @@
-const CLICK_TEXT = "[click]"
-const CREDIT_TEXT = "[credit]"
+var CLICK_TEXT = "[click]"
+var CREDIT_TEXT = "[credit]"
 
 // main
 function always_be_running() {
