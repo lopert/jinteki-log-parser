@@ -1,3 +1,6 @@
+const CLICK_TEXT = "[click]"
+const CREDIT_TEXT = "[credit]"
+
 // main
 function always_be_running() {
     // get the system logs
@@ -28,8 +31,8 @@ function parse_start_of_turn_node(node_text) {
 
     username = node_text.split(" started their turn ")[0]
     turn = node_text.split(" turn ")[1].split(" with ")[0]
-    credits = node_text.split(" [credit_icon]")[0].split(" with ")[1]
-    cards = node_text.split(" [credit_icon] and ")[1].split(" cards in")[0]
+    credits = node_text.split(" " + CREDIT_TEXT)[0].split(" with ")[1]
+    cards = node_text.split(" " + CREDIT_TEXT + " and ")[1].split(" cards in")[0]
     
     console.log(">>>> " + username + " is starting turn: " + turn + " // credits: " + credits + " // cards: " + cards)
     
@@ -39,15 +42,15 @@ function parse_end_of_turn_node(node_text) {
 
     username = node_text.split(" is ending their turn ")[0]
     turn = node_text.split(" turn ")[1].split(" with ")[0]
-    credits = node_text.split(" [credit_icon]")[0].split(" with ")[1]
-    cards = node_text.split(" [credit_icon] and ")[1].split(" cards in")[0]
+    credits = node_text.split(" " + CREDIT_TEXT)[0].split(" with ")[1]
+    cards = node_text.split(" " + CREDIT_TEXT + " and ")[1].split(" cards in")[0]
     
     console.log("<<<< " + username + " is ending turn: " + turn + " // credits: " + credits + " // cards: " + cards)
 }
 
 function replace_log_icons(html) {
-    text = html.replace("<span class=\"anr-icon click\"></span>", "[click_icon]")
-    text = text.replace("<span class=\"anr-icon credit\"></span>", "[credit_icon]")
+    text = html.replace("<span class=\"anr-icon click\"></span>", CLICK_TEXT)
+    text = text.replace("<span class=\"anr-icon credit\"></span>", CREDIT_TEXT)
 
     return text
 }
