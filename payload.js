@@ -11,15 +11,33 @@ function always_be_running() {
     system_log_nodes = document.getElementsByClassName("system");
     size = system_log_nodes.length
 
-    // iterate through nodes backwards
-    for (index = size-1;index >= 0; index--) {
+    // prepare node array
+    node_data = []
+
+    // iterate through nodes
+    for (index = 0;index < size; index++) {
 
         node = system_log_nodes[index]
         system_node = new SystemNode(node)
 
-        node_type = process_node(node)
+        node_hash = process_node(node)
 
+        if (node_hash != null) {
+            node_data.push(node_hash)            
+        }
     }
+
+    // convert nodes to data points
+    graph_data = []
+
+    for (index = 0; index < node_data.length; index++) {
+        if (node_data[index]["username"] == "lopert") {
+            graph_data.push(node_data[index]["credits"])
+        }
+    }
+    console.log(graph_data)
+
+    chrome.runtime.sendMessage(graph_data);
 }
 
 always_be_running();

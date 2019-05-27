@@ -9,6 +9,7 @@ window.addEventListener('load', function (evt) {
 });
 
 // Listen to messages from the payload.js script and write to popout.html
-chrome.runtime.onMessage.addListener(function (message) {
-	document.getElementById('pagetitle').innerHTML = message;
+chrome.runtime.onMessage.addListener(function (game_data) {
+	chrome.tabs.getCurrent(generate_chart(game_data));
 });
+

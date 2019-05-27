@@ -43,11 +43,13 @@ function process_node(node) {
     node_text = parse_node_for_text (node)
 
     if (node_text.includes("started their turn")) {
-        parse_start_of_turn_node(node_text)
+        return parse_start_of_turn_node(node_text)
     }
-    else if (node_text.includes("is ending their turn")) {
-        return parse_end_of_turn_node(node_text)
-    }
+    // else if (node_text.includes("is ending their turn")) {
+    //     return parse_end_of_turn_node(node_text)
+    // }
+
+    return null
 }
 
 function parse_start_of_turn_node(node_text) {
@@ -57,7 +59,15 @@ function parse_start_of_turn_node(node_text) {
     credits = node_text.split(" " + CREDIT_TEXT)[0].split(" with ")[1]
     cards = node_text.split(" " + CREDIT_TEXT + " and ")[1].split(" cards in")[0]
     
-    console.log(">>>> " + username + " is starting turn: " + turn + " // credits: " + credits + " // cards: " + cards)
+    //console.log(">>>> " + username + " is starting turn: " + turn + " // credits: " + credits + " // cards: " + cards)
+
+    return {
+        "username": username,
+        "turn" : turn,
+        "credits" : credits,
+        "cards" : cards,
+        "type" : "start"
+    }
     
 }
 
@@ -68,9 +78,15 @@ function parse_end_of_turn_node(node_text) {
     credits = node_text.split(" " + CREDIT_TEXT)[0].split(" with ")[1]
     cards = node_text.split(" " + CREDIT_TEXT + " and ")[1].split(" cards in")[0]
     
-    console.log("<<<< " + username + " is ending turn: " + turn + " // credits: " + credits + " // cards: " + cards)
+    //console.log("<<<< " + username + " is ending turn: " + turn + " // credits: " + credits + " // cards: " + cards)
 
-    return NODE_TYPES.END_OF_TURN
+    return {
+        "username": username,
+        "turn" : turn,
+        "credits" : credits,
+        "cards" : cards,
+        "type" : "end"
+    }
 }
 
 function abc () {}
