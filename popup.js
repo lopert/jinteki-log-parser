@@ -1,7 +1,7 @@
 // Inject the scripts into the current tab after the popout has loaded
 window.addEventListener('load', function (evt) {
 	chrome.extension.getBackgroundPage().chrome.tabs.executeScript(null, {
-		file: 'models/system_node.js'
+		file: 'helpers/log_parser.js'
 	});;
 	chrome.extension.getBackgroundPage().chrome.tabs.executeScript(null, {
 		file: 'payload.js'
@@ -9,7 +9,7 @@ window.addEventListener('load', function (evt) {
 });
 
 // Listen to messages from the payload.js script and write to popout.html
-chrome.runtime.onMessage.addListener(function (game_data) {
-	chrome.tabs.getCurrent(generate_chart(game_data));
+chrome.runtime.onMessage.addListener(function (nodes) {
+	chrome.tabs.getCurrent(parse_nodes(nodes));
 });
 
